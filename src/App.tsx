@@ -79,7 +79,7 @@ export const App = () => {
         {step === 2 && (
           <>
             <div className={appSt.box}>
-              <Gap size={32} />
+              <Gap size={64} />
               <Typography.TitleResponsive
                 font="system"
                 tag="h1"
@@ -102,7 +102,7 @@ export const App = () => {
               >
                 Составить финансовый план
               </ButtonMobile>
-              <Gap size={8} />
+              <Gap size={12} />
               <ButtonMobile
                 loading={loading}
                 block
@@ -115,7 +115,7 @@ export const App = () => {
               >
                 Узнать о банковских продуктах
               </ButtonMobile>
-              <Gap size={8} />
+              <Gap size={12} />
               <ButtonMobile
                 loading={loading}
                 block
@@ -128,7 +128,7 @@ export const App = () => {
               >
                 Выгоднее использовать кэшбэк
               </ButtonMobile>
-              <Gap size={8} />
+              <Gap size={12} />
               <ButtonMobile
                 loading={loading}
                 block
