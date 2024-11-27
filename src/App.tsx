@@ -24,7 +24,7 @@ export const App = () => {
   const [progressValue, setProgressValue] = useState(25);
   const [step, setStep] = useState(1);
   const [goal, setGoal] = useState("");
-  const [plan, setPlan] = useState("one");
+  const [plan, setPlan] = useState("");
 
   const submit = () => {
     setLoading(true);
@@ -464,7 +464,13 @@ export const App = () => {
 
       {step === 3 && (
         <div className={appSt.bottomBtnThx}>
-          <ButtonMobile loading={loading} block view="primary" onClick={submit}>
+          <ButtonMobile
+            loading={loading}
+            block
+            disabled={!plan}
+            view="primary"
+            onClick={submit}
+          >
             Продолжить
           </ButtonMobile>
         </div>
