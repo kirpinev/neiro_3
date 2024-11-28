@@ -17,6 +17,7 @@ import { Gap } from "@alfalab/core-components/gap";
 import { useState } from "react";
 import { StatusBadge } from "@alfalab/core-components/status-badge";
 import { ProgressBar } from "@alfalab/core-components/progress-bar";
+import { sendMainGoalDataToGA, sendPlanNameDataToGA } from "./utils/events.ts";
 
 export const App = () => {
   const [loading, setLoading] = useState(false);
@@ -26,15 +27,29 @@ export const App = () => {
   const [goal, setGoal] = useState("");
   const [plan, setPlan] = useState("");
 
-  const submit = () => {
+  const submitPlanName = (goal: string, plan: string) => {
     setLoading(true);
-    Promise.resolve().then(() => {
+
+    sendPlanNameDataToGA({ main_goal: goal, plan_name: plan }).then(() => {
       LS.setItem(LSKeys.ShowThx, true);
       setThx(true);
       setLoading(false);
-      console.log(goal);
-      console.log(plan);
     });
+  };
+
+  const submitMainGoal = (goal: string) => {
+    setGoal(goal);
+    setLoading(true);
+
+    sendMainGoalDataToGA({ main_goal: goal }).then(() => {
+      setLoading(false);
+      setStep(3);
+      setProgressValue(100);
+    });
+  };
+
+  const clickStart = () => {
+    window.gtag("event", "neiro_3_start_click");
   };
 
   if (thxShow) {
@@ -91,52 +106,48 @@ export const App = () => {
               </Typography.TitleResponsive>
               <Gap size={16} />
               <ButtonMobile
-                loading={loading}
+                loading={!!goal && goal === "Составить финансовый план"}
+                disabled={!!goal && goal !== "Составить финансовый план"}
                 block
                 view="primary"
                 onClick={() => {
-                  setStep(3);
-                  setProgressValue(100);
-                  setGoal("Составить финансовый план");
+                  submitMainGoal("Составить финансовый план");
                 }}
               >
                 Составить финансовый план
               </ButtonMobile>
               <Gap size={12} />
               <ButtonMobile
-                loading={loading}
+                loading={!!goal && goal === "Узнать о банковских продуктах"}
+                disabled={!!goal && goal !== "Узнать о банковских продуктах"}
                 block
                 view="primary"
                 onClick={() => {
-                  setStep(3);
-                  setProgressValue(100);
-                  setGoal("Узнать о банковских продуктах");
+                  submitMainGoal("Узнать о банковских продуктах");
                 }}
               >
                 Узнать о банковских продуктах
               </ButtonMobile>
               <Gap size={12} />
               <ButtonMobile
-                loading={loading}
+                loading={!!goal && goal === "Выгоднее использовать кэшбэк"}
+                disabled={!!goal && goal !== "Выгоднее использовать кэшбэк"}
                 block
                 view="primary"
                 onClick={() => {
-                  setStep(3);
-                  setProgressValue(100);
-                  setGoal("Выгоднее использовать кэшбэк");
+                  submitMainGoal("Выгоднее использовать кэшбэк");
                 }}
               >
                 Выгоднее использовать кэшбэк
               </ButtonMobile>
               <Gap size={12} />
               <ButtonMobile
-                loading={loading}
+                loading={!!goal && goal === "Задать вопрос"}
+                disabled={!!goal && goal !== "Задать вопрос"}
                 block
                 view="primary"
                 onClick={() => {
-                  setStep(3);
-                  setProgressValue(100);
-                  setGoal("Задать вопрос");
+                  submitMainGoal("Задать вопрос");
                 }}
               >
                 Задать вопрос
@@ -281,10 +292,15 @@ export const App = () => {
             <Gap size={16} />
 
             <div className={appSt.plans}>
-              <div className={appSt.plan} onClick={() => setPlan("one")}>
+              <div
+                className={appSt.plan}
+                onClick={() => setPlan("1 неделя – 29 руб./нед")}
+              >
                 <div>
-                  {plan !== "one" && <div className={appSt.statusEmpty}></div>}
-                  {plan === "one" && (
+                  {plan !== "1 неделя – 29 руб./нед" && (
+                    <div className={appSt.statusEmpty}></div>
+                  )}
+                  {plan === "1 неделя – 29 руб./нед" && (
                     <StatusBadge view="positive-checkmark" size={24} />
                   )}
                 </div>
@@ -305,10 +321,15 @@ export const App = () => {
                   29 руб./нед.
                 </Typography.Text>
               </div>
-              <div className={appSt.plan} onClick={() => setPlan("two")}>
+              <div
+                className={appSt.plan}
+                onClick={() => setPlan("1 месяц – 25 руб./нед")}
+              >
                 <div>
-                  {plan !== "two" && <div className={appSt.statusEmpty}></div>}
-                  {plan === "two" && (
+                  {plan !== "1 месяц – 25 руб./нед" && (
+                    <div className={appSt.statusEmpty}></div>
+                  )}
+                  {plan === "1 месяц – 25 руб./нед" && (
                     <StatusBadge view="positive-checkmark" size={24} />
                   )}
                 </div>
@@ -339,12 +360,15 @@ export const App = () => {
                   25 руб./нед.
                 </Typography.Text>
               </div>
-              <div className={appSt.plan} onClick={() => setPlan("three")}>
+              <div
+                className={appSt.plan}
+                onClick={() => setPlan("3 месяца – 21 руб./нед")}
+              >
                 <div>
-                  {plan !== "three" && (
+                  {plan !== "3 месяца – 21 руб./нед" && (
                     <div className={appSt.statusEmpty}></div>
                   )}
-                  {plan === "three" && (
+                  {plan === "3 месяца – 21 руб./нед" && (
                     <StatusBadge view="positive-checkmark" size={24} />
                   )}
                 </div>
@@ -375,10 +399,15 @@ export const App = () => {
                   21 руб./нед.
                 </Typography.Text>
               </div>
-              <div className={appSt.plan} onClick={() => setPlan("four")}>
+              <div
+                className={appSt.plan}
+                onClick={() => setPlan("6 месяцев – 19 руб./нед")}
+              >
                 <div>
-                  {plan !== "four" && <div className={appSt.statusEmpty}></div>}
-                  {plan === "four" && (
+                  {plan !== "6 месяцев – 19 руб./нед" && (
+                    <div className={appSt.statusEmpty}></div>
+                  )}
+                  {plan === "6 месяцев – 19 руб./нед" && (
                     <StatusBadge view="positive-checkmark" size={24} />
                   )}
                 </div>
@@ -455,6 +484,7 @@ export const App = () => {
             onClick={() => {
               setStep(2);
               setProgressValue(50);
+              clickStart();
             }}
           >
             Начать
@@ -469,7 +499,7 @@ export const App = () => {
             block
             disabled={!plan}
             view="primary"
-            onClick={submit}
+            onClick={() => submitPlanName(goal, plan)}
           >
             Продолжить
           </ButtonMobile>
