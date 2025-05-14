@@ -30,7 +30,9 @@ export const ThxLayout = () => {
       </div>
 
       <div className={appSt.bottomBtnThx}>
-        <ButtonMobile block view="primary" href="https://ya.ru">
+        <ButtonMobile block view="primary" onClick={() => {
+window.location.replace("https://ya.ru");
+}}>
           Вернуться на главный
         </ButtonMobile>
       </div>
