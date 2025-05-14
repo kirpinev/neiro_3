@@ -30,7 +30,7 @@ export const ThxLayout = () => {
       </div>
 
       <div className={appSt.bottomBtnThx}>
-        <ButtonMobile block view="primary" href="https://online.alfabank.ru/">
+        <ButtonMobile block view="primary" href="https://web.alfabank.ru/dashboard">
           Вернуться на главный
         </ButtonMobile>
       </div>
